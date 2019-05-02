@@ -1,0 +1,45 @@
+<% include ../partials/header %>
+    <div class="row justify-content-center">
+        <div class="col-md-12 text-center">
+        <h1> Create a New Campground</h1>
+        </div>
+            <div class="col-xs-12">
+                <form class="campgroundform" action="/campgrounds" method="POST" enctype="multipart/form-data" >
+                    <div class="form-group">
+                        <label>Camp Name</label>
+                        <input class="form-control" type="text" name="name" placeholder="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Camp Image Url</label>
+                        <input class="form-control" type="file" name="image" placeholder="image url" accept="image/x-png,image/jpg,image/jpeg" multiple required>
+                         <small>Max 5 image</small>
+                    </div>
+                    <div class="form-group">
+                        <label>Camp Description </label>
+                        <input class="form-control" type="text" name="description" placeholder="description" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Location</label>
+                        <input class="form-control" type="text" name="location" placeholder="E.g. Yosemite National Park, CA" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Camp Price</label>
+                        <input class="form-control" type="number" name="price" placeholder="enter price" min="0.01" step="0.01" required>
+                    </div>
+                    <div class="form-group">
+                        <button class="btn btn-large btn-primary btn-block">Submit!</button>
+                    </div>
+                    </form>
+                    
+                <a class="btn btn-outline-primary" href="/campgrounds"><i class="fa fa-arrow-left"></i>Go Back</a>
+            <div class="form">
+                <div class="modal"></div>
+                <div class="text-center">
+                    <div class="spinner-border" role="status" style="display:none">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<% include ../partials/footer %>

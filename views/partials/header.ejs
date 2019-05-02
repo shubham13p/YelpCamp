@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+      <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>YelpCamp</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <link rel="stylesheet" href="/stylesheets/main.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link href="https://fonts.googleapis.com/css?family=Kaushan+Script" rel="stylesheet">
+    </head>
+    <body>
+
+
+
+
+
+
+<nav class="navbar navbar-expand-md navbar-dark bg-dark mb-4">
+  <a class="navbar-brand" href="/">YelpCamp</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarCollapse">
+
+    <ul class="navbar-nav mr-auto">
+            <li class="nav-item <%= typeof page !== 'undefined' && page === 'campgrounds' ? 'active' : '' %>">
+                <a class="nav-link" href="/campgrounds">Home</a>
+                </li>
+          </ul>
+     <ul class="navbar-nav navbar-right">
+              <% if(!currentUser){ %>
+                  <li class="nav-item <%= typeof page !== 'undefined' && page === 'login' ? 'active' : '' %>">
+                      <a class="nav-link" href="/login">Login</a>
+                      </li>
+                  <li class="nav-item <%= typeof page !== 'undefined' && page === 'register' ? 'active' : '' %>">
+                      <a class="nav-link" href="/register">Sign Up</a>
+                      </li>
+              <% } else { %>
+                  <li class="nav-item <%= typeof page !== 'undefined' && page === 'showProfile' ? 'active' : '' %>">
+                        <a class="nav-link" href="/users/<%=currentUser.id%>/showProfile">Signed In As <%= currentUser.username %></a>
+                        </li>
+                  <li>
+                      <a  class="nav-link" href="/logout">Logout</a>
+                      </li>
+              <% } %>
+          </ul>
+  </div>
+</nav>
+
+ <div class="container">
+        
+        <% if(error && error.length > 0){ %>
+            <div class="alert alert-danger"  role="alert">
+                <%= error %>
+            </div>
+        <% } %>
+        <% if(success && success.length > 0){ %>
+            <div class="alert alert-success" role="alert">
+                <%= success %>
+            </div>
+        <% } %>
+    </div>
+
+     <div class="container">
+<!--<div class="divformat container">-->

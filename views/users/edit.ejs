@@ -1,0 +1,40 @@
+<% include ../partials/header %>
+<div class="row justify-content-center">
+        <div class="col-md-12 text-center">
+                    <h1>Edit Profile</h1>
+        </div>
+            <div class="col-8 col-sm-8 col-md-6 col-lg-4">
+            <form class="form" action="/users/<%=foundUser._id%>?_method=PUT" method="POST" enctype="multipart/form-data">
+
+                <div class="form-group">
+                    <label>FirstName</label>
+                    <input class="form-control" type="text" name="user[firstName]" placeholder="user first name" value="<%=foundUser.firstName%>" required>
+                </div>
+                <div class="form-group">
+                    <label>LastName</label>
+                    <input class="form-control" type="text" name="user[lastName]" placeholder="user last name" value="<%=foundUser.lastName%>" required>
+                </div>
+                <div class="form-group">
+                    <label>User Avatar</label>
+                    <input type="file" id="inputAvatar" class="form-control" name="avatar" placeholder="Avatar Image" accept="image/x-png,image/jpg,image/jpeg">
+                </div>
+                <div class="form-group">
+                    <label>UserBio</label>
+                    <input class="form-control" type="text" name="user[bio]" placeholder="user short bio" value="<%=foundUser.bio%>" required>
+                    
+                </div>
+                <div class="form-group">
+                    <button class="btn btn-lg btn-primary btn-block" type="submit">Update</button>
+                </div>
+            <a class="btn btn-outline-primary" href="/campgrounds"><i class="fa fa-arrow-left"></i>Go Back</a>
+            </form>
+        <div class="form">
+             <div class="text-center">
+                  <div class="text-center spinner-border" role="status" style="display:none" >
+                    <span class="sr-only">Loading...</span>
+                  </div>
+            </div>
+        </div>
+    </div>
+    </div>
+<% include ../partials/footer %>

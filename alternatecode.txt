@@ -1,0 +1,601 @@
+for edit and delete authority
+<% if(foundUser === "yes"){ %>
+<a class="btn btn-warning" href="/campgrounds/<%= campground._id %>/edit">Edit Camp</a>
+<form id="deletebutton" action="/campgrounds/<%= campground._id %>?_method=DELETE" method="POST">
+    <button class="btn btn-danger float-right">DELETE</button>
+</form>
+<% } %>
+
+Campground.findById(req.params.id, function(err, foundCampground) {
+                console.log(foundCampground.author.id);
+                console.log(req.user._id);
+                if (foundCampground.author.id.equals(req.user._id)) {
+                    foundUser = "yes";
+                }
+            });
+            
+            
+            
+views.campground/index.ejs
+
+<% include ../partials/header %>
+
+
+ <div class="container">
+     <header class="jumbotron">
+         <div class="container">
+             <h1>Welcome To YelpCamp!</h1>
+             <p>View our hand-picked campgrounds from all over the world</p>
+             <p>                         
+                <a class="btn btn-primary btn-large" href="/campgrounds/new">Add New Campground</a>
+             </p>
+         </div>
+     </header>
+     
+     <div class="row text-center" style="display:flex; flex-wrap: wrap;">
+        <% campgrounds.forEach(function(campground){ %>
+            <div class="col-md-3 col-sm-6">
+                <div class="thumbnail">
+                   <img class="img-responsive" src="<%= campground.image %>" alt="img">
+                   <div class="caption">
+                       <h4><%= campground.name %></h4>
+                   </div>
+                   <p>
+                       <a href="/campgrounds/<%= campground._id %>" class="btn btn-primary">More Info</a>
+                   </p>
+                </div>
+            </div>
+        <% }); %>
+    </div>
+</div>
+
+<% include ../partials/footer %>
+
+campground/show comment
+
+    <div class="well">
+                    <div class="text-right">
+                        <a class="btn btn-success" href="/campgrounds/<%= campground._id %>/comments/new">Add New Comment</a>
+                    </div>
+                    <hr>
+                        <% campground.comments.forEach(function(comment){ %>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <strong><%= comment.author.username %></strong>
+                                    <span class="pull-right"><%= moment(comment.createdAt).fromNow() %></span>
+                                    <p>
+                                        <%= comment.text %>
+                                    </p>
+                                    <% if(currentUser && comment.author.id.equals(currentUser._id)){  %>
+                                    
+                                    <a class="btn btn-xs btn-primary" 
+                                    href="/campgrounds/<%=campground._id%>/comments/<%=comment._id%>/edit/">
+                                        Edit
+                                    </a>
+                                    <form class="deletebutton" action="/campgrounds/<%=campground._id%>/comments/<%=comment._id%>?_method=DELETE" method="POST">
+                                    <button class="btn btn-xs btn-danger">Delete</button>
+                                    </form>
+                                    
+                                    <% } %>
+                                    
+                                </div>
+                            </div>
+                            <% }) %>
+            </div>
+            
+            
+            
+            
+            route-> campground -> post
+            
+                            // //or//////////////////////////////
+                // // var newCampground = { name: name, image: image,location: location, lat: lat, lng: lng, description: desc, author:{} }
+                // // newCampground.author.id = req.user._id;
+                // // newCampground.author.username = req.user.username;
+                // //console.log("dsdfdffd" + newCampground);
+
+                // or /////////
+                // but in new.ejs we need to write campground[name/location/ any] but not for image.
+                // req.body.campground.image = result.secure_url;
+                // then geocoder code........
+                // then req.body.campground.location = location,
+                // then req.bpdy.campground.lat = lat,
+                // then req.bpdy.campground.lng = lng.
+
+                // then Campground.create(req.body.campground,function(err, newlyCreated)) and continue
+
+
+
+
+ <!--<div class="col-xs-12">-->
+        <!--     <% if(noMatch !== null) { %>-->
+        <!--     <h3><%= noMatch %></h3>-->
+        <!--     <p>-->
+        <!--    	<form action="/campgrounds" method="GET" class="form-inline">-->
+        <!--    		<div class="form-group">-->
+        <!--    			<input type="text" name="search" placeholder="Campground search..." class="form-control">-->
+        <!--    			<input type="submit" value="Search" class="btn btn-default">-->
+        <!--    		</div>-->
+        <!--    	</form>-->
+        <!--    </p>-->
+        <!--     <% } %>-->
+        <!-- </div>-->
+        
+        
+        
+         <!--<div class="list-group">-->
+
+                <!--    <%allCampgrounds.forEach(function(onecamp){%>-->
+                <!--    <li class="list-group-item "><%=onecamp.location%></li>-->
+                <!--    <% }) %>-->
+                    <!--<li class="list-group-item active">Cras justo odio</li>-->
+                    <!--<li class="list-group-item">Dapibus ac facilisis in</li>-->
+                    <!--<li class="list-group-item">Morbi leo risus</li>-->
+                    <!--<li class="list-group-item">Porta ac consectetur ac</li>-->
+                    <!--<li class="list-group-item">Vestibulum at eros</li>-->
+                <!--</div>-->
+                
+                <% include ../partials/header %>
+
+<div class="container">
+    <div class="row justify-content-center">
+                <div class="col-md-12 text-center">
+
+            <h1>Review Page: <%= campground.name %></h1>
+            </div>
+            <div class="thumbnail">
+                <div class="caption-full">
+                    <% if (campground.rating === 0) { %>
+                    <h5>
+                        <em>No reviews yet.</em>
+                    </h5>
+                    <% } else { %>
+                    <p>
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star <% if (campground.rating > 1.5) { %> checked <% } %>"></span>
+                        <span class="fa fa-star <% if (campground.rating > 2.5) { %> checked <% } %>"></span>
+                        <span class="fa fa-star <% if (campground.rating > 3.5) { %> checked <% } %>"></span>
+                        <span class="fa fa-star <% if (campground.rating > 4.5) { %> checked <% } %>"></span>
+                        <em>(total reviews: <%= campground.reviews.length %>)</em>
+                    </p>
+                    <p>
+                        Current campground rating: <strong><%= campground.rating.toFixed(2) %></strong>
+                    </p>
+                    <p><h4>All reviews for this campground:</h4></p>
+                    <hr style="margin-top: 0;">
+                    <% campground.reviews.forEach(function(review){ %>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <%- '<span class="fa fa-star checked"></span>'.repeat(review.rating) %><%- '<span class="fa fa-star"></span>'.repeat(5 - review.rating) %>
+                            <div>Review by: <strong><%= review.author.username %></strong></div>
+                            <span><em><%= review.updatedAt.toDateString() %></em></span>
+                        </div>
+                        <div class="col-md-9">
+                            <p style="text-align: justify; word-wrap: break-word;">
+                                <%= review.text %>
+                            </p>
+                            <% if(currentUser && review.author.id.equals(currentUser._id)){ %>
+                            <a class="btn btn-xs btn-warning"
+                               href="/campgrounds/<%=campground._id %>/reviews/<%=review._id %>/edit">Edit</a>
+                            <form id="delete-form" action="/campgrounds/<%=campground._id %>/reviews/<%=review._id %>?_method=DELETE" method="POST">
+                                <input type="submit" class="btn btn-xs btn-danger" value="Delete">
+                            </form>
+                            <% } %>
+                        </div>
+                    </div>
+                    <hr>
+                    <% }); %>
+                    <% } %>
+                    <!--<div>-->
+                    <!--    <a class="btn btn-primary <% if (currentUser && campground.reviews.some(function (review) {return review.author.id.equals(currentUser._id)})) { %> disabled <% } %>" href="/campgrounds/<%= campground._id %>/reviews/new">-->
+                    <!--        Write a New Review</a>-->
+                    <!--</div>-->
+                    <div style="margin-top: 10px;">
+                        <a class="btn btn-outline-primary" href="/campgrounds/<%= campground._id %>"><i class="fa fa-arrow-left"></i> Go back</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--Review section-->
+</div>
+
+<% include ../partials/footer %>
+
+
+
+//for single image upload
+// router.post("/", middleware.isLoggedIn, upload.single('image'), function(req, res) {
+
+//     cloudinary.v2.uploader.upload(req.file.path, function(error, result) {
+//         if (error) {
+//             req.flash("error", "be sure that the image size is below 10MB");
+//             return res.redirect('back');
+//         }
+//         else {
+//             var name = req.body.name;
+//             var price = req.body.price;
+//             var image = result.secure_url; //req.body.image;
+//             var imageId = result.public_id;
+
+//             var desc = req.body.description;
+//             var author = {
+//                 id: req.user._id,
+//                 username: req.user.username
+//             }
+//             console.log(req.body.location);
+//             geocoder.geocode(req.body.location, function(err, data) {
+//                 console.log(err)
+//                 if (err || !data.length) {
+//                     req.flash('error', 'Invalid address');
+//                     return res.redirect('back');
+//                 }
+//                 var lat = data[0].latitude;
+//                 var lng = data[0].longitude;
+//                 var location = data[0].formattedAddress;
+//                 var newCampground = { name: name, price: price, image: image,imageId:imageId, description: desc, author: author, location: location, lat: lat, lng: lng }
+
+
+//                 Campground.create(newCampground, function(err, newlyCreated) {
+//                     if (err) {
+//                         console.log(err);
+//                     }
+//                     else {
+//                         res.redirect("/campgrounds");
+//                     }
+//                 });
+//             });
+//         }
+//     });
+// });
+
+
+
+
+var express = require("express");
+var router = express.Router();
+var Campground = require("../models/campground");
+var Comment = require("../models/comment");
+var middleware = require("../middleware/index");
+var Review = require("../models/review");
+var { promisify } = require('util');
+var sizeOf = promisify(require('image-size'));
+
+var NodeGeocoder = require('node-geocoder');
+
+var options = {
+    provider: 'google',
+    httpAdapter: 'https',
+    apiKey: process.env.GEOCODER_API_KEY,
+    formatter: null
+};
+
+var geocoder = NodeGeocoder(options);
+var multer = require('multer');
+var storage = multer.diskStorage({
+    filename: function(req, file, callback) {
+        callback(null, Date.now() + file.originalname);
+    }
+});
+
+var imageFilter = function(req, file, cb) {
+    // accept image files only
+    if (!file.originalname.match(/\.(jpg|jpeg|png)$/i)) {
+        // req.flash("error","sorry only jpg | jpeg | png allow");
+        //res.redirect("/campgrounds");
+        return cb(new Error('Only image files are allowed!'), false);
+    }
+    cb(null, true);
+};
+// var upload = multer({ storage: storage, fileFilter: imageFilter })
+var upload = multer({ storage: storage, fileFilter: imageFilter })
+
+
+var cloudinary = require('cloudinary');
+cloudinary.config({
+    cloud_name: 'mycloudsap',
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET
+});
+
+
+router.get("/", function(req, res) {
+    var noMatch = null;
+    if (req.query.search) {
+        const regex = new RegExp(escapeRegex(req.query.search), 'gi');
+        Campground.find({ name: regex }, function(err, allCampgrounds) {
+            if (err) {
+                console.log(err);
+            }
+            else {
+                if (allCampgrounds.length < 1) {
+                    noMatch = "No campgrounds match that query, please try again.";
+                }
+                //            res.render("campgrounds/index",{campgrounds: allCampgrounds });
+                // console.log(Campgrounds)
+                res.render("campgrounds/index", { campgrounds: allCampgrounds, page: 'campgrounds', noMatch: noMatch });
+
+            }
+        });
+    }
+    else {
+        Campground.find({}, function(err, allCampgrounds) {
+            if (err) {
+                console.log(err);
+            }
+            else {
+                // console.log(allCampgrounds);
+                res.render("campgrounds/index", { campgrounds: allCampgrounds, page: 'campgrounds', noMatch: noMatch });
+            }
+        });
+    }
+});
+
+
+router.post("/", middleware.isLoggedIn, middleware.isSafe, upload.array('image', 12), async function(req, res) {
+
+    // console.log(req.body);
+
+    var img = [];
+    var imgId = [];
+    var imagearray = [];
+    imagearray = req.files;
+    var total_img_size = 0;
+    var imgWH = [];
+    // console.log(req.files)
+    // console.log("3333333333" + JSON.stringify(req.files))
+
+    // for (var i = 0; i < req.files.length; i++) {
+    //     imgWH = await sizeOf(req.files[i].path);
+    //     if (imgWH.width > imgWH.height) {
+    //         total_img_size += req.files[i].size;
+    //     }
+    //     else {
+    //         req.flash("error", "Please upload only landscape image");
+    //         res.redirect("back");
+    //     }
+    // }
+
+    // if (total_img_size >= 2e+7 || req.files.length > 5) {
+    //     req.flash('error', 'Please Upload Less Than 5 Image or The Total Size Of All Image Should Be less Than 20 MB');
+    //     res.redirect('back');
+    // }
+    // else {
+    //     for (var i = 0; i < imagearray.length; i++) {
+    //         //  console.log(imagearray[i].path);
+    //         let waitforupload = await cloudinary.v2.uploader.upload(imagearray[i].path) //, function(error, result) {
+    //         console.log(waitforupload.secure_url);
+    //         console.log(waitforupload.public_id);
+    //         console.log(waitforupload);
+    //         console.log("================")
+    //         img.push(waitforupload.secure_url);
+    //         imgId.push(waitforupload.public_id);
+    //     }
+
+    //     var name = req.body.name;
+    //     var price = req.body.price;
+    //     var desc = req.body.description;
+    //     var author = {
+    //         id: req.user._id,
+    //         username: req.user.username
+    //     }
+    //     var lat;
+    //     var lng;
+    //     var location;
+
+    //     await geocoder.geocode(req.body.location, function(err, data) {
+    //         console.log("error: "+ err)
+    //         if (err || !data.length) {
+    //             req.flash('error', 'Invalid address');
+    //             res.redirect('back');
+    //         }
+    //         lat = data[0].latitude;
+    //         lng = data[0].longitude;
+    //         location = data[0].formattedAddress;
+    //     })
+    //     var newCampground = { name: name, price: price, image: img, imageId: imgId, description: desc, author: author, location: location, lat: lat, lng: lng }
+    //     // console.log("2323"+JSON.stringify(newCampground));
+    //     // console.log("456789" + newCampground.image[1])
+    //     Campground.create(newCampground, function(err, newlyCreated) {
+    //         if (err) {
+    //             console.log(err);
+    //         }
+    //         else {
+    //             console.log(newlyCreated);
+    //             res.redirect("/campgrounds");
+    //         }
+    //     });
+    // }
+});
+
+
+
+router.get("/new", middleware.isLoggedIn, function(req, res) {
+    res.render("campgrounds/new");
+});
+
+router.get("/:id", function(req, res) {
+    console.log(req.params.id);
+
+    Campground.findById(req.params.id).populate("comments").populate({
+        path: "reviews",
+        options: { sort: { createdAt: -1 } }
+    }).exec(function(err, foundCampground) {
+        if (err) {
+            console.log(err);
+        }
+        else {
+            //render show template with that campground
+            if (!foundCampground) {
+                req.flash("error", "campground not found");
+                return res.redirect("/campgrounds");
+                // return res.status(400).send("items not found")
+            }
+            Campground.find({}, function(err, allCampgrounds) {
+                console.log(foundCampground);
+                res.render("campgrounds/show", { campground: foundCampground, allCampgrounds });
+            });
+        }
+    });
+})
+
+router.get("/:id/edit", middleware.checkCampgroundOwnership, function(req, res) {
+    Campground.findById(req.params.id, function(err, foundCampground) {
+        if (err) {
+            req.flash("error", "campground not found");
+            return res.redirect("/campgrounds");
+        }
+        res.render("campgrounds/edit", { campground: foundCampground });
+    })
+})
+
+router.put("/:id", middleware.checkCampgroundOwnership, upload.array('image', 12), async function(req, res) {
+    // router.put("/:id", middleware.checkCampgroundOwnership, upload.single('image'), function(req, res) {
+    var total_img_size = 0;
+    var imgWH = [];
+    var img = [];
+    var imgId = [];
+    // var imagearray = [];
+
+    Campground.findById(req.params.id, async function(err, campground) {
+        if (err) {
+            req.flash("error", err.message);
+            res.redirect("back");
+        }
+        
+        if (!req.files[0].originalname.match(/^https:\/\/images\.unsplash\.com\/.*/) || !req.files[0].originalname.match(/[a-zA-Z]{1,}\-[a-zA-Z]{1,}\-[0-9]{1,}\-unsplash\.jpg/)) {
+            console.log()
+}
+        //        console.log(campground.image.length)
+        // else {
+        //     if (req.files.length) {
+
+        //         for (var i = 0; i < req.files.length; i++) {
+        //             imgWH = await sizeOf(req.files[i].path);
+        //             total_img_size += req.files[i].size;
+        //             if (imgWH.width < imgWH.height) {
+        //                 req.flash("error", "Please upload only landscape image");
+        //                 res.redirect("back");
+        //             }
+        //             else if (!req.files[i].originalname.match(/^https:\/\/images\.unsplash\.com\/.*/) || !req.files[i].originalname.match(/[a-zA-Z]{1,}\-[a-zA-Z]{1,}\-[0-9]{1,}\-unsplash\.jpg/)) {
+        //                 req.flash('error', 'Only images from images.unsplash.com allowed.\nSee https://youtu.be/Bn3weNRQRDE for how to copy image urls from unsplash.');
+        //                 res.redirect("back");
+        //             }
+        //         }
+
+        //         if (total_img_size >= 2e+7 || req.files.length > 5) {
+        //             req.flash('error', 'Please Upload Less Than 5 Image or The Total Size Of All Image Should Be less Than 20 MB');
+        //             res.redirect('back');
+        //         }
+
+        //         for (var i = 0; i < campground.image.length; i++) {
+        //             await cloudinary.v2.uploader.destroy(campground.imageId[i]);
+        //         }
+
+        //         for (var i = 0; i < req.files.length; i++) {
+        //             //  console.log(imagearray[i].path);
+        //             let waitforupload = await cloudinary.v2.uploader.upload(req.files[i].path) //, function(error, result) {
+        //             console.log(waitforupload.secure_url);
+        //             console.log(waitforupload.public_id);
+        //             console.log("====+++++++++========")
+        //             img.push(waitforupload.secure_url);
+        //             imgId.push(waitforupload.public_id);
+        //         }
+
+        //         req.body.campground.image = img;
+        //         req.body.campground.imageId = imgId;
+        //     }
+
+        //     await geocoder.geocode(req.body.campground.location, function(err, data) {
+        //         // console.log(err)
+        //         if (err || !data.length) {
+        //             req.flash('error', 'Invalid address');
+        //             res.redirect('back');
+        //         }
+        //         req.body.campground.lat = data[0].latitude;
+        //         req.body.campground.lng = data[0].longitude;
+        //         req.body.campground.location = data[0].formattedAddress;
+        //     })
+
+        //     console.log("2323" + JSON.stringify(req.body.campground));
+        //     Campground.findByIdAndUpdate(req.params.id, req.body.campground, function(err, updateCampground) {
+        //         if (err) {
+        //             console.log(err);
+
+        //         }
+        //         else {
+        //             req.flash("success", "Campground updated");
+        //             res.redirect("/campgrounds/" + req.params.id)
+        //         }
+        //     })
+        // }
+    // })
+})
+
+
+
+// DESTROY CAMPGROUND ROUTE
+router.delete("/:id", middleware.checkCampgroundOwnership, function(req, res) {
+    Campground.findById(req.params.id, function(err, campground) {
+        if (err) {
+            res.redirect("/campgrounds");
+        }
+        else {
+            // deletes all comments associated with the campground
+            Comment.deleteMany({ "_id": { $in: campground.comments } }, function(err) {
+                if (err) {
+                    console.log(err);
+                    return res.redirect("/campgrounds");
+                }
+                // deletes all reviews associated with the campground
+                Review.deleteMany({ "_id": { $in: campground.reviews } }, function(err) {
+                    if (err) {
+                        console.log(err);
+                        return res.redirect("/campgrounds");
+                    }
+                    //  delete the campground
+                    campground.deleteOne();
+                    req.flash("success", "Campground deleted successfully!");
+                    res.redirect("/campgrounds");
+                });
+            });
+        }
+    });
+});
+
+
+// SHOW - shows more info about one campground
+router.get("/:id", function(req, res) {
+    //find the campground with provided ID
+    Campground.findById(req.params.id).populate("comments").populate({
+        path: "reviews",
+        options: { sort: { createdAt: -1 } }
+    }).exec(function(err, foundCampground) {
+        if (err) {
+            console.log(err);
+        }
+        else {
+            //render show template with that campground
+            res.render("campgrounds/show", { campground: foundCampground });
+        }
+    });
+});
+
+
+
+function escapeRegex(text) {
+    return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
+};
+
+
+
+module.exports = router;
+
+
+
+
+// else if (!req.files[i].originalname.match(/^https:\/\/images\.unsplash\.com\/.*/) || !req.files[i].originalname.match(/[a-zA-Z]{1,}\-[a-zA-Z]{1,}\-[0-9]{1,}\-unsplash\.jpg/)) 
+                    // {
+                    //     req.flash('error', 'Only images from images.unsplash.com allowed.\nSee https://youtu.be/Bn3weNRQRDE for how to copy image urls from unsplash.');
+                    //     res.redirect('back');
+                    // }

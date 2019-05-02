@@ -1,0 +1,45 @@
+<% include ./partials/header %>
+    <div class="row">
+         <div class="col-md-12">
+            <form class="form" action="/register" method="POST" enctype="multipart/form-data" >
+              <h1 class="h3 mb-3 font-weight-normal text-center">Please Sign Up</h1>
+
+                
+                <label for="inputUsername" class="sr-only">Username</label>
+                <input type="text" id="inputUsername" class="form-control" name="username" placeholder="Username" required autofocus>
+                
+                <label for="inputPassword" class="sr-only">Password</label>
+                <input type="password" id="inputPassword" class="form-control" name="password" placeholder="Password" required>
+                
+                <label for="inputFirstName" class="a sr-only">FirstName</label>
+                <input type="text" id="inputFirstName" class="form-control" name="firstName" placeholder="Firstname" required >
+                
+                <label for="inputLastName" class="b sr-only">LastName</label>
+                <input type="text" id="inputLastName" class="form-control" name="lastName" placeholder="Lastname" required >
+                
+                <label for="inputEmail" class="sr-only">Email</label>
+                <input type="email" id="inputEmail" class="form-control" name="email" placeholder="Email" required >
+                
+                <label for="inputAvatar" class="sr-only">Avatar</label>
+                <input type="file" id="inputAvatar" class="form-control" name="avatar" placeholder="Avatar Image" accept="image/x-png,image/jpg,image/jpeg" required >
+                
+                <label for="inputUserBio" class="sr-only">Biodata</label>
+                <input type="text" id="inputUserBio" class="form-control" name="bio" placeholder="Short Bio" required >
+                
+                <label for="inputAdminCode" class="sr-only">AdminCode</label>
+                <input type="text" id="inputAdminCode" class="form-control" name="adminCode" placeholder="Admincode / Leave it if you dont have">
+                
+                <button class="btn btn-lg btn-primary btn-block sap" type="submit">Sign Up</button>
+            </form>
+
+        <div class="form">
+            <a class="btn btn-outline-primary" href="/campgrounds"><i class="fa fa-arrow-left"></i>Go Back</a>
+            <div class="text-center"><br/>
+                  <div class="spinner-border" role="status" style="display:none">
+                    <span class="sr-only">Loading...</span>
+                  </div>
+                </div>
+        </div>
+</div>
+</div>
+<% include ./partials/footer %>

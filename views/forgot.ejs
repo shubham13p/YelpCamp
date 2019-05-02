@@ -1,0 +1,23 @@
+<% include ./partials/header %>
+
+<div class="row">
+	<div class="col-md-12">
+		<form class="form" action="/forgot" method="POST">
+            <h1 class="h3 mb-3 font-weight-normal text-center">Forgot Password</h1>
+			<input type="email" name="email" autofocus class="form-control" placeholder="email" required>
+				
+			<button class="btn btn-lg btn-primary btn-block sap" type="submit">Reset Password</button>
+
+		</form>
+		
+		<div class="form"><br/>
+          <div class="text-center"><br />
+                <div class="spinner-border" role="status" style="display:none">
+                    <span class="sr-only">Loading...</span>
+                </div>
+            </div>
+        </div>
+	</div>
+</div>
+
+<% include ./partials/footer %>

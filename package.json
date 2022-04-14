@@ -10,7 +10,7 @@
   "author": "SAP",
   "license": "ISC",
   "dependencies": {
-    "async": "^2.6.2",
+    "async": "^3.2.2",
     "body-parse": "^0.1.0",
     "body-parser": "^1.18.3",
     "cloudinary": "^1.14.0",
